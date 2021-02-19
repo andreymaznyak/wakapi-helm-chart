@@ -25,6 +25,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "wakapi.serviceAccountName" . }}
+      volumes:
+        - name: wakapi-config-volume
+          configMap:
+            name: {{ include "wakapi.fullname" . }}-config-map
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -33,9 +37,16 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: WAKAPI_EXPOSE_METRICS
+              value: "{{ .Values.exposeMetrics }}"
+          volumeMounts:
+            - name: wakapi-config-volume
+              mountPath: /app/config.yml
+              subPath: config.yml
           ports:
             - name: http
-              containerPort: 3000
+              containerPort: {{ .Values.wakapi_config.server.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
