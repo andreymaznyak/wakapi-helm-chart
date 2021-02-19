@@ -85,7 +85,7 @@ wakapi_config:
   env: development
   
   server:
-    listen_ipv4: 127.0.0.1    # leave blank to disable ipv4
+    listen_ipv4: "0.0.0.0"    # leave blank to disable ipv4
     listen_ipv6:              # leave blank to disable ipv6
     tls_cert_path:            # leave blank to not use https
     tls_key_path:             # leave blank to not use https

@@ -3,7 +3,31 @@ kind: ConfigMap
 metadata:
   name: {{ include "wakapi.fullname" . }}-config-map
 data:
-  config.yml: |-
-    {{- with .Values.wakapi_config }}
-      {{- toYaml . | nindent 4 }}
-    {{- end }}
+  ENVIRONMENT: "{{ .Values.wakapi_config.env }}"
+  WAKAPI_PORT: "{{ .Values.wakapi_config.server.port }}"
+  WAKAPI_LISTEN_IPV4: "{{ .Values.wakapi_config.server.listen_ipv4 }}"
+  {{- with .Values.wakapi_config.server.listen_ipv6 }}
+  WAKAPI_LISTEN_IPV6: "{{ .Values.wakapi_config.server.listen_ipv6 }}"
+  {{- end }}
+  {{- with .Values.wakapi_config.server.tls_cert_path }}
+  WAKAPI_TLS_CERT_PATH: "{{ .Values.wakapi_config.server.tls_cert_path }}"
+  {{- end }}
+  {{- with .Values.wakapi_config.server.tls_key_path }}
+  WAKAPI_TLS_KEY_PATH: "{{ .Values.wakapi_config.server.tls_key_path }}"
+  {{- end }}
+  WAKAPI_BASE_PATH: "{{ .Values.wakapi_config.server.base_path }}"
+  WAKAPI_PASSWORD_SALT: "{{ .Values.wakapi_config.security.password_salt }}"
+  WAKAPI_INSECURE_COOKIES: "{{ .Values.wakapi_config.security.insecure_cookies }}"
+  WAKAPI_COOKIE_MAX_AGE: "{{ .Values.wakapi_config.security.cookie_max_age }}"
+  WAKAPI_ALLOW_SIGNUP: "{{ .Values.wakapi_config.security.allow_signup }}"
+  WAKAPI_EXPOSE_METRICS: "{{ .Values.wakapi_config.security.expose_metrics }}"
+  WAKAPI_DB_HOST: "{{ .Values.wakapi_config.db.host }}"
+  WAKAPI_DB_PORT: "{{ .Values.wakapi_config.db.port }}"
+  WAKAPI_DB_USER: "{{ .Values.wakapi_config.db.user }}"
+  WAKAPI_DB_PASSWORD: "{{ .Values.wakapi_config.db.password }}"
+  WAKAPI_DB_NAME: "{{ .Values.wakapi_config.db.name }}"
+  WAKAPI_DB_TYPE: "{{ .Values.wakapi_config.db.dialect }}"
+  WAKAPI_DB_CHARSET: "{{ .Values.wakapi_config.db.charset }}"
+  WAKAPI_DB_MAX_CONNECTIONS: "{{ .Values.wakapi_config.db.max_conn }}"
+  WAKAPI_DB_SSL: "{{ .Values.wakapi_config.db.ssl }}"
+
