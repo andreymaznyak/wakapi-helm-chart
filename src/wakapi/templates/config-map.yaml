@@ -30,4 +30,11 @@ data:
   WAKAPI_DB_CHARSET: "{{ .Values.wakapi_config.db.charset }}"
   WAKAPI_DB_MAX_CONNECTIONS: "{{ .Values.wakapi_config.db.max_conn }}"
   WAKAPI_DB_SSL: "{{ .Values.wakapi_config.db.ssl }}"
-
+  WAKAPI_MAIL_ENABLED: "{{ .Values.wakapi_config.mail.enabled }}"
+  WAKAPI_MAIL_SENDER: "{{ .Values.wakapi_config.mail.sender }}"
+  WAKAPI_MAIL_PROVIDER: "{{ .Values.wakapi_config.mail.provider }}"
+  WAKAPI_MAIL_SMTP_HOST: "{{ .Values.wakapi_config.mail.smtp.host }}"
+  WAKAPI_MAIL_SMTP_PORT: "{{ .Values.wakapi_config.mail.smtp.port }}"
+  WAKAPI_MAIL_SMTP_USERNAME: "{{ .Values.wakapi_config.mail.smtp.username }}"
+  WAKAPI_MAIL_SMTP_PASSWORD: "{{ .Values.wakapi_config.mail.smtp.password }}"
+  WAKAPI_MAIL_SMTP_TLS: "{{ .Values.wakapi_config.mail.smtp.tls }}"
