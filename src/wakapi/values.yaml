@@ -116,3 +116,14 @@ wakapi_config:
     cookie_max_age: 172800
     allow_signup: true
     expose_metrics: false
+
+  mail:
+    enabled: false
+    sender: "noreply@wakapi.dev"
+    provider: "smtp"
+    smtp:
+      host: "smtp.example.com"
+      port: 465
+      username: "your_username"
+      password: "your_password"
+      tls: true
