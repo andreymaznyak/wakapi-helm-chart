@@ -53,6 +53,28 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  enabled: true
+
+  ## A manually managed Persistent Volume and Claim
+  ## Requires persistence.enabled: true
+  ## If defined, PVC must be created manually before volume will be bound
+  # existingClaim:
+
+  ## mariadb data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 2Gi
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -104,7 +126,7 @@ wakapi_config:
     port:                     # leave blank when using sqlite3
     user:                     # leave blank when using sqlite3
     password:                 # leave blank when using sqlite3
-    name: wakapi_db.db        # database name for mysql / postgres or file path for sqlite (e.g. /tmp/wakapi.db)
+    name: /data/wakapi_db.db  # database name for mysql / postgres or file path for sqlite (e.g. /tmp/wakapi.db)
     dialect: sqlite3          # mysql, postgres, sqlite3
     charset: utf8mb4          # only used for mysql connections
     max_conn: 2               # maximum number of concurrent connections to maintain
