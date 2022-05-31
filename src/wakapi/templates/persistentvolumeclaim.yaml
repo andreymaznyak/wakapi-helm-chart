@@ -2,10 +2,10 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "syncthing.fullname" . }}
+  name: {{ template "wakapi.fullname" . }}
   labels:
-    app: {{ template "syncthing.name" . }}
-    chart: {{ template "syncthing.chart" . }}
+    app: {{ template "wakapi.name" . }}
+    chart: {{ template "wakapi.chart" . }}
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
