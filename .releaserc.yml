@@ -1,0 +1,88 @@
+plugins: [
+  [
+    "semantic-release-unsquash", {
+    "commitAnalyzerConfig": {
+      preset: "conventionalcommits",
+      releaseRules: [
+        {
+          breaking: true,
+          release: "major",
+        },
+        {
+          type: "perf",
+          release: "minor",
+        },
+        {
+          type: "zap",
+          release: "minor",
+        },
+        {
+          type: "feat",
+          release: "minor",
+        },
+        {
+          type: "fix",
+          release: "patch",
+        },
+        {
+          type: "fixed",
+          release: "patch",
+        },
+        {
+          type: "improve",
+          release: "patch",
+        },
+        {
+          type: "improvement",
+          release: "patch",
+        },
+        {
+          type: "docs",
+          scope: "README",
+          release: "patch",
+        },
+        {
+          type: "chore",
+          release: "patch",
+        },
+        {
+          type: "refactor",
+          release: "patch",
+        }
+      ],
+      parserOpts: {
+        noteKeywords: [ "BREAKING CHANGE", "BREAKING CHANGES", "BREAKING" ],
+      },
+    },
+    "notesGeneratorConfig": {
+      preset: "conventionalcommits",
+      presetConfig: {
+        types: [
+          { type: "feat", section: "🎉 Features", hidden: false },
+          { type: "perf", section: "⚡️ Performance", hidden: false },
+          { type: "zap", section: "⚡️ Performance", hidden: false },
+          { type: "fix", section: "🐛 Bug Fixes", hidden: false },
+          { type: "fixed", section: "🐛 Bug Fixes", hidden: false },
+          { type: "improve", section: "🌟Improvements", hidden: false },
+          { type: "docs", section: "📝 Docs", hidden: false },
+          { type: "chore", section: "🔨 Miscellaneous Chores", hidden: false },
+          { type: "refactor", section: "♻️ Refactor", hidden: false },
+        ],
+      },
+      parserOpts: {
+        noteKeywords: [ "BREAKING CHANGE", "BREAKING CHANGES", "BREAKING" ],
+      },
+    }
+  },
+  ],
+  "@semantic-release/changelog",
+  [
+    "@semantic-release/git",
+    {
+      "assets": [ "*.md"],
+      "message": "🚀 Update changelog and release version v${nextRelease.version}"
+    }
+  ]
+]
+tagFormat: "v${version}"
+branches: ['main', 'next', {name: 'beta', prerelease: true}, {name: 'alpha', prerelease: true}]

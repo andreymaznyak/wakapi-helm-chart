@@ -48,6 +48,13 @@ ingress:
   hosts:
   - host: chart-example.local
     paths: []
+    #  - path: /
+    #    pathType: Prefix
+    #    backend:
+    #      service:
+    #        name: wakapi.wakapi
+    #        port:
+    #          number: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

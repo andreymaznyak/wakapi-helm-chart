@@ -1,0 +1,75 @@
+name: Check for new releases of the app
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Run daily at midnight UTC
+  workflow_dispatch: # Allow manual triggering of the workflow
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Fetch the latest release from the GitHub API
+      - name: Get latest release from wakapi
+        id: fetch_latest_release
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/muety/wakapi/releases/latest | jq -r .tag_name)
+          echo "Latest Wakapi release: $LATEST_VERSION"
+          echo "latest_version=$LATEST_VERSION" >> $GITHUB_ENV
+
+      # Step 3: Read the current appVersion and version from Chart.yaml
+      - name: Read Chart.yaml values
+        id: read_chart_values
+        run: |
+          APP_VERSION=$(yq '.appVersion' charts/wakapi/Chart.yaml)
+          CHART_VERSION=$(yq '.version' charts/wakapi/Chart.yaml)
+          echo "Current appVersion: $APP_VERSION"
+          echo "Current Chart version: $CHART_VERSION"
+          echo "app_version=$APP_VERSION" >> $GITHUB_ENV
+          echo "chart_version=$CHART_VERSION" >> $GITHUB_ENV
+
+      # Step 4: Compare versions and update if necessary
+      - name: Update Chart.yaml if versions differ
+        if: env.latest_version != env.app_version
+        run: |
+          echo "Updating Chart.yaml..."
+
+          # Update appVersion
+          yq -i ".appVersion = \"${{ env.latest_version }}\"" charts/wakapi/Chart.yaml
+
+          # Increment the patch version
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${{ env.chart_version }}"
+          PATCH=$((PATCH + 1))
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "New Chart version: $NEW_VERSION"
+
+          # Update the version in Chart.yaml
+          yq -i ".version = \"$NEW_VERSION\"" charts/wakapi/Chart.yaml
+
+          echo "Updated Chart.yaml:"
+          cat charts/wakapi/Chart.yaml
+
+      # Step 5: Commit and push changes if there are updates
+      - name: Commit and push changes
+        if: env.latest_version != env.app_version
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add charts/wakapi/Chart.yaml
+          git commit -m "chore: Update appVersion to ${{ env.latest_version }} and increment chart version"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger Release Workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/release.yml/dispatches \
+            -d '{"ref":"main"}'
