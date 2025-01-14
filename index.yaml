@@ -9,6 +9,6 @@ entries:
     name: wakapi
     type: application
     urls:
-    - wakapi-2.0.0.tgz
-    version: 2.0.0
+    - wakapi-2.0.1.tgz
+    version: 2.0.1
 generated: "2024-05-12T21:05:57.774044+01:00"
