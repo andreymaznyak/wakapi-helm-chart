@@ -61,7 +61,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add charts/wakapi/Chart.yaml
-          git commit -m "chore: Update appVersion to ${{ env.latest_version }} and increment chart version"
+          git commit -m "bump: Update appVersion to ${{ env.latest_version }} and increment chart version"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
