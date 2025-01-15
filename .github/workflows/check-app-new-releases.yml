@@ -67,6 +67,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Trigger Release Workflow
+        if: env.latest_version != env.app_version
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
