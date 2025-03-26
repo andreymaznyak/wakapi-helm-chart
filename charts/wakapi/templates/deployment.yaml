@@ -36,6 +36,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "wakapi.fullname" . }}-config-map
+            - secretRef:
+                name: {{ include "wakapi.fullname" . }}-secrets
           ports:
             - name: http
               containerPort: {{ .Values.wakapi_config.server.port }}
