@@ -112,6 +112,7 @@ exposeMetrics: false
 # Wakapi app config
 wakapi_config:
   env: development
+  skip_migrations: false
 
   server:
     listen_ipv4: "0.0.0.0" # leave blank to disable ipv4
@@ -127,6 +128,9 @@ wakapi_config:
     custom_languages:
       vue: Vue
       jsx: JSX
+    leaderboard_require_auth: false
+    count_cache_ttl_min: 30
+    data_cleanup_dry_run: false
 
   db:
     host: # leave blank when using sqlite3
@@ -138,6 +142,7 @@ wakapi_config:
     charset: utf8mb4 # only used for mysql connections
     max_conn: 2 # maximum number of concurrent connections to maintain
     ssl: false # whether to use tls for db connection (must be true for cockroachdb) (ignored for mysql and sqlite)
+    automigrate_fail_silently: false
 
   security:
     password_salt: # CHANGE !
@@ -145,6 +150,7 @@ wakapi_config:
     cookie_max_age: 172800
     allow_signup: true
     expose_metrics: false
+    enable_proxy: false
 
   mail:
     enabled: false
