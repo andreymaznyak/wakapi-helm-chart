@@ -136,7 +136,6 @@ wakapi_config:
     host: # leave blank when using sqlite3
     port: # leave blank when using sqlite3
     user: # leave blank when using sqlite3
-    password: # leave blank when using sqlite3
     name: /data/wakapi_db.db # database name for mysql / postgres or file path for sqlite (e.g. /tmp/wakapi.db)
     dialect: sqlite3 # mysql, postgres, sqlite3
     charset: utf8mb4 # only used for mysql connections
@@ -145,7 +144,6 @@ wakapi_config:
     automigrate_fail_silently: false
 
   security:
-    password_salt: # CHANGE !
     insecure_cookies: false # You need to set this to 'true' when on localhost
     cookie_max_age: 172800
     allow_signup: true
@@ -160,5 +158,14 @@ wakapi_config:
       host: "smtp.example.com"
       port: 465
       username: "your_username"
-      password: "your_password"
       tls: true
+
+# Secrets
+wakapi_secrets:
+  db:
+    password: # leave blank when using sqlite3
+  security:
+    password_salt: # CHANGE !
+  mail:
+    smtp:
+      password: "your_password"
